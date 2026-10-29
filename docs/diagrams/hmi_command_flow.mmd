@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant User
+  participant HMI as DWIN HMI
+  participant Parser as DWIN_HMI helper
+  participant App as main.cpp
+  User->>HMI: Touch configured button (UI project unavailable)
+  HMI-->>Parser: UART frame beginning 5A A5
+  Parser->>Parser: Require command byte 0x83; read button at index 8
+  App->>Parser: getButton()
+  App->>Parser: pageSwitch / setData / setQR
+  Parser-->>HMI: 0x82 page or VP write

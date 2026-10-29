@@ -1,0 +1,7 @@
+flowchart TD
+  Accepted["Green or white majority"] --> Reward["Increment count; add Rs 10"]
+  Reward --> Withdraw["Withdraw button"]
+  Withdraw --> Payload["Build text: RVM|amount|random-hex-ID"]
+  Payload --> VP["Write text to DWIN VP 0x1010"]
+  VP --> Render["Possible HMI QR rendering<br/>configuration not available"]
+  Render --> Stop["No scanner, backend validation,<br/>payment transfer or receipt in source"]

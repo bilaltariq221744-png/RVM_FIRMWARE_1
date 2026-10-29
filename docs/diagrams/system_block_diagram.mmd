@@ -1,0 +1,12 @@
+flowchart LR
+  HMI["DWIN HMI<br/>model/UI project unknown"]
+  S3["ESP32-S3 firmware<br/>src/main.cpp"]
+  CAM["ESP32-CAM peer<br/>firmware/model absent"]
+  US["Ultrasonic sensor<br/>model unknown"]
+  SV1["Sorting servo 1<br/>GPIO 48"]
+  SV2["Sorting servo 2<br/>GPIO 4"]
+  HMI <-->|"UART1 115200 8N1<br/>RX 10 / TX 9"| S3
+  S3 <-->|"ESP-NOW; encryption disabled"| CAM
+  S3 <-->|"TRIG 12 / ECHO 13"| US
+  S3 -->|"PWM"| SV1
+  S3 -->|"PWM"| SV2

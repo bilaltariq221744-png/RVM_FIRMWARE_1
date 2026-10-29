@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant Main as ESP32-S3
+  participant HMI as DWIN HMI
+  participant Cam as ESP32-CAM peer
+  Main->>HMI: UART1 115200 8N1; page/VP writes
+  HMI-->>Main: UART frame; button byte at offset 8
+  Main->>Cam: ESP-NOW CommandMessage START
+  loop Until three messages
+    Cam-->>Main: ESP-NOW PredictionMessage (expected)
+  end
+  Main->>Cam: ESP-NOW CommandMessage STOP
+  Note over Cam: Camera implementation and protocol compatibility are not present for verification

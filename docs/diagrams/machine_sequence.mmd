@@ -1,0 +1,29 @@
+sequenceDiagram
+  participant User
+  participant HMI
+  participant Main as ESP32-S3 main.cpp
+  participant Sonar as Ultrasonic sensor
+  participant Cam as ESP32-CAM peer
+  participant Servo as Sorting servo
+  User->>HMI: START
+  HMI-->>Main: UART button frame
+  Main->>HMI: Reset counters / page 2
+  loop Bottle acceptance
+    Main->>Sonar: Trigger and measure
+    Sonar-->>Main: Pulse duration / timeout
+  end
+  Main->>Cam: START command
+  loop Exactly 3 prediction messages
+    Cam-->>Main: prediction + timestamp
+  end
+  Main->>Cam: STOP command
+  alt Green or white majority
+    Main->>Servo: Move matching servo to 70 degrees and home
+    Main->>HMI: Update count and earning
+  else Unknown/no majority
+    Main->>Main: No reward
+  end
+  Main->>Sonar: Wait until distance >= 25 cm
+  User->>HMI: Withdraw
+  Main->>HMI: Page 1 and text payload at VP 0x1010
+  Note over HMI,Main: No payment processing or transfer is implemented

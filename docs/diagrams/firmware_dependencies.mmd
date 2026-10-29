@@ -1,0 +1,15 @@
+flowchart LR
+  Main["src/main.cpp"]
+  DWIN["lib/DWIN_HMI"]
+  Camera["lib/Esp32Cam_manager"]
+  Servo["ESP32Servo package"]
+  Arduino["Arduino core"]
+  Hardware["lib/RVMHardware<br/>not called by app"]
+  Main --> DWIN
+  Main --> Camera
+  Main --> Servo
+  Main --> Arduino
+  DWIN --> Arduino
+  Camera --> Arduino
+  Hardware --> Servo
+  Hardware --> Arduino

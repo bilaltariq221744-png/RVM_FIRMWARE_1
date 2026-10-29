@@ -1,0 +1,19 @@
+stateDiagram-v2
+  [*] --> IDLE: setup
+  IDLE --> ACCEPTING: START while idle
+  ACCEPTING --> DETECTING: distance < 25 cm
+  DETECTING --> SORTING: three predictions collected
+  SORTING --> WAITING_FOR_CLEAR: inline classification/sorting completes
+  WAITING_FOR_CLEAR --> ACCEPTING: distance >= 25 cm
+  ACCEPTING --> WITHDRAW: withdraw button
+  ACCEPTING --> DONATING: donate button
+  WITHDRAW --> IDLE: cancel or thank-you completion
+  DONATING --> IDLE: cancel or thank-you completion
+  note right of IDLE
+    HMI button dispatch is not globally restricted by state.
+    Detection blocks button polling until its prediction wait returns.
+  end note
+  note right of DETECTING
+    Main code blocks until three ESP-NOW messages;
+    no collection timeout is implemented.
+  end note

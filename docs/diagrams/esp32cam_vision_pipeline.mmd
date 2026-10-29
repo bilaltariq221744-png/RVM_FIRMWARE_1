@@ -1,0 +1,12 @@
+flowchart LR
+  Start["Main sends START over ESP-NOW"] --> External["External camera capture / preprocessing / inference<br/>implementation not included"]
+  External --> Message["PredictionMessage expected<br/>prediction text + timestamp"]
+  Message --> Receive["ESP32CamManager receive callback"]
+  Receive --> Normalize["Trim, uppercase, spaces/hyphens to underscores"]
+  Normalize --> Vote["Collect exactly 3 messages"]
+  Vote -->|at least 2 GREEN| Green["GREEN_BOTTLE"]
+  Vote -->|at least 2 WHITE| White["WHITE_BOTTLE"]
+  Vote -->|otherwise| Unknown["UNKNOWN_BOTTLE"]
+  Green --> Action["Main firmware selects servo 1"]
+  White --> Action2["Main firmware selects servo 2"]
+  Unknown --> NoAction["No bottle reward"]
